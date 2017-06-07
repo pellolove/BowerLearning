@@ -1,15 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>index</title>
-	<style>
-		body{background-color:  yellow;}
-	</style>
+
+
+    <style>.active {
+        color: red;
+        font-weight: bold
+    }</style>
 </head>
-<body>
-	<h1>hello gulp!</h1>
-	<h2>something append! </h2>
-	<h2> reload test! 12322</h2>
+
+<body ng-app="helloworld">
+<a ui-sref="hello" ui-sref-active="active">Hello</a>
+<a ui-sref="about" ui-sref-active="active">About</a>
+
+<ui-view></ui-view>
+
+<script src="js/lib/lib.js"></script>
+<script src="js/router.config.js">
+
+</script>
 </body>
 </html>
