@@ -10,6 +10,8 @@ const header = require('gulp-header');
 const clean = require('gulp-clean')
 //分文件执行事件 https://github.com/aseemk/requireDir
 const requireDir = require('require-dir');
+// babel 转换ES6
+const babel = require('gulp-babel');
 
 const pkg = require("./package.json");
 
@@ -46,12 +48,15 @@ gulp.task('connect', () => {
 });
 //将静态文件拷贝到对应的文件夹如 不要压缩的 html 图片 文档等资源
 gulp.task('copy', () => {
-    return gulp.src('./src/*.html')
+    gulp.src('src/*.html')
         .pipe(gulp.dest('./dist/'));
+    gulp.src('src/tpls/*')
+        .pipe(gulp.dest('./dist/tpls/'));
+
 });
 //热加载html
 gulp.task('html', () => {
-    return gulp.src('./dist/*.html')
+    return gulp.src('dist/*.html')
         .pipe(connect.reload());
 });
 //合并
@@ -59,7 +64,7 @@ gulp.task('concat-js-lib', () => {
     return gulp.src([
         _BC + 'jquery/dist/jquery.min.js',
         _BC + 'angular/angular.min.js'
-        // , _BC + 'oclazyload/dist/oclazyload.min.js'
+        , _BC + 'oclazyload/dist/oclazyload.min.js'
         , _BC + 'angular-ui-router/release/angular-ui-router.min.js'
         // , _BC + 'moment/min/moment-with-locales.min.js'
         // , _BC + 'lodash/dist/lodash.min.js'
@@ -71,15 +76,18 @@ gulp.task('concat-js-lib', () => {
 });
 gulp.task('js', () => {
     "use strict";
-    return gulp.src("./src/js/*.js")
-    //.pipe(uglify())
+    return gulp.src("src/js/*.js")
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(uglify())
         .pipe(gulp.dest('./dist/js/'));
 });
 //监视程序
 gulp.task('watch', () => {
-    gulp.watch(['./src/js/*.js'], ['js']);
-    gulp.watch(['./src/*.html'], ['copy']);
-    gulp.watch(['./dist/*.html'], ['html']); //如果html变化，就调用html任务重加载页面html
+    gulp.watch(['src/js/*.js'], ['js']);
+    gulp.watch(['src/*.html', 'src/tpls/'], ['copy']);
+    gulp.watch(['dist/*.html'], ['html']); //如果html变化，就调用html任务重加载页面html
 });
 //执行
 gulp.task('default', ['connect', 'watch']);

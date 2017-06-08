@@ -1,5 +1,10 @@
+app.config(['$stateProvider', '$ocLazyLoadProvider', function ($stateProvider, $ocLazyLoadProvider) {
 
-app.config(['$stateProvider',function($stateProvider) {
+    $ocLazyLoadProvider.config({
+            debug: true,
+            events: true
+        }
+    );
     var helloState = {
         name: 'hello',
         url: '/hello',
@@ -10,6 +15,32 @@ app.config(['$stateProvider',function($stateProvider) {
         url: '/about',
         template: '<h3>Its the UI-Router hello world app!</h3>'
     };
-    $stateProvider.state(helloState);
-    $stateProvider.state(aboutState);
+    $stateProvider.state(helloState)
+        .state(aboutState)
+        .state(
+            {
+                name: 'home',
+                url: '/home',
+                templateUrl: 'tpls/home.html',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        $ocLazyLoad.load(['testModule'],
+                            {
+                                cache: false
+                            });
+                    }]
+                }
+            }
+        ).state(
+        {
+            name: 'homeA',
+            url: '/homeA',
+            templateUrl: 'tpls/home.html',
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    $ocLazyLoad.load('testModule');
+                }]
+            }
+        }
+    )
 }]);
