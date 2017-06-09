@@ -20,7 +20,7 @@
     "angular-bootstrap": "^2.5.0",
     "angular": "angularjs#^1.6.4",
     "requirejs": "^2.3.3",
-    "angular-ui-router": "ui-router#^1.0.3+hybrid-2.0.0-2",
+    "angular-ui-router": "ui-router#^1.0.3",
     "oclazyload": "^1.1.0",
     "moment": "momentjs#^2.18.1",
     "lodash": "^4.17.4"
